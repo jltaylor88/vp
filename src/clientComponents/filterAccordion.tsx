@@ -25,10 +25,12 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 }) => {
 	const [isExpanded, setIsExpanded] = useState(false);
 
+	// Too inexpensive to justify useCallBack
 	const toggleIsExpanded = () => setIsExpanded(prev => !prev);
 
 	const [isExtraExpanded, setIsExtraExpanded] = useState(false);
 
+	// Too inexpensive to justify useCallBack
 	const toggleIsExtraExpanded = () => setIsExtraExpanded(prev => !prev);
 
 	const { extraFacets, initialFacets } = useMemo(() => {
