@@ -2,11 +2,12 @@
 
 import FilterAccordion from "@/clientComponents/filterAccordion";
 import SortingSelect from "@/clientComponents/sortingSelect";
+import ViewMoreButton from "@/clientComponents/viewMoreButton";
 import ProductCard from "@/serverComponents/productCard";
 import { ICommonPageProps } from "@/types";
 import getListingsData from "@/utils/getListingData";
 import parsePageSearchParams from "@/utils/parsePageSearchParams";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material";
 import _ from "lodash";
 
 export type TAllowedQueryParams = "ap" | "page" | "sort";
@@ -83,6 +84,33 @@ export default async function Products(
 						);
 					})}
 				</Grid>
+				<Box
+					display='flex'
+					justifyContent={"center"}
+					alignItems={"center"}
+					marginY={2}
+				>
+					<Box>
+						<Typography variant='body1' color='text.primary'>
+							You have viewed {data.pagination.size} of {data.pagination.total}{" "}
+							results
+						</Typography>
+						<LinearProgress
+							sx={{ marginY: 2 }}
+							variant='determinate'
+							value={Math.floor(
+								(data.pagination.size / data.pagination.total) * 100
+							)}
+						/>
+						<Box display='flex' justifyContent='center'>
+							<ViewMoreButton
+								additionalPages={additionalPages}
+								pageSize={sizeNumber}
+								total={data.pagination.total}
+							/>
+						</Box>
+					</Box>
+				</Box>
 			</Grid>
 		</Grid>
 	);
