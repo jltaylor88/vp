@@ -11,19 +11,19 @@ import {
 import { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import { TFacets } from "@/types";
+import FilterCheckbox from "./filterCheckbox";
 
 interface IFlterAccordionProps {
-	facetContents: { key: string; element: ReactElement }[];
-	facetTitle: string;
-	numInitialFacets?: number;
+	facet: TFacets;
+	numInitialOptions?: number;
 }
 
 const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
-	facetContents,
-	facetTitle,
-	numInitialFacets,
+	facet,
+	numInitialOptions,
 }) => {
-	const [isExpanded, setIsExpanded] = useState(false);
+	const [isExpanded, setIsExpanded] = useState(true);
 
 	// Too inexpensive to justify useCallBack
 	const toggleIsExpanded = () => setIsExpanded(prev => !prev);
@@ -33,18 +33,18 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 	// Too inexpensive to justify useCallBack
 	const toggleIsExtraExpanded = () => setIsExtraExpanded(prev => !prev);
 
-	const { extraFacets, initialFacets } = useMemo(() => {
-		const validNumInitialFacets = Boolean(numInitialFacets);
+	const { extraOptions, initialOptions } = useMemo(() => {
+		const validNumInitialOptions = Boolean(numInitialOptions);
 
 		return {
-			initialFacets: validNumInitialFacets
-				? facetContents.slice(0, numInitialFacets)
-				: facetContents,
-			extraFacets: validNumInitialFacets
-				? facetContents.slice(numInitialFacets)
+			initialOptions: validNumInitialOptions
+				? facet.options.slice(0, numInitialOptions)
+				: facet.options,
+			extraOptions: validNumInitialOptions
+				? facet.options.slice(numInitialOptions)
 				: undefined,
 		};
-	}, [facetContents, numInitialFacets]);
+	}, [facet.options, numInitialOptions]);
 
 	return (
 		<>
@@ -52,6 +52,7 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 				expanded={isExpanded}
 				onChange={toggleIsExpanded}
 				disableGutters
+				square
 			>
 				<AccordionSummary
 					expandIcon={isExpanded ? <RemoveIcon /> : <AddIcon />}
@@ -60,21 +61,25 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 					sx={{ borderBottom: "1px solid", borderColor: "grey.400" }}
 				>
 					<Typography variant='h3' fontSize='1.4rem'>
-						{facetTitle}
+						{facet.displayName}
 					</Typography>
 				</AccordionSummary>
-				<AccordionDetails sx={{ padding: 0 }}>
-					{initialFacets.map(({ key, element }) => (
-						<Box key={key} sx={{ padding: "1rem" }}>
-							{element}
+				<AccordionDetails sx={{ padding: 0, paddingX: "1rem" }}>
+					{initialOptions.map(opt => (
+						<Box key={opt.identifier}>
+							<FilterCheckbox label={opt.displayValue} value={opt.identifier} />
 						</Box>
 					))}
 				</AccordionDetails>
 			</Accordion>
 			{/* This is the extra facets */}
-			{extraFacets && (
-				<>
-					<Accordion expanded={isExtraExpanded} disableGutters>
+			{extraOptions && extraOptions.length > 0 ? (
+				<Box
+					sx={{
+						display: isExpanded ? "block" : "none",
+					}}
+				>
+					<Accordion expanded={isExtraExpanded} disableGutters square>
 						<AccordionDetails sx={{ padding: 0 }}></AccordionDetails>
 						<AccordionSummary
 							aria-controls='facet-price-extra-content'
@@ -82,14 +87,16 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 							sx={{
 								padding: 0,
 								minHeight: 0,
-								height: "fit-content",
 								margin: "-12px 0",
 							}}
 						>
-							<Box>
-								{extraFacets.map(({ key, element }) => (
-									<Box key={key} sx={{ padding: "1rem" }}>
-										{element}
+							<Box sx={{ paddingX: "1rem" }}>
+								{extraOptions.map(ex => (
+									<Box key={ex.identifier}>
+										<FilterCheckbox
+											label={ex.displayValue}
+											value={ex.identifier}
+										/>
 									</Box>
 								))}
 							</Box>
@@ -114,8 +121,8 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 							{isExtraExpanded ? "Show Less" : "Show More"}
 						</Button>
 					</Box>
-				</>
-			)}
+				</Box>
+			) : null}
 		</>
 	);
 };

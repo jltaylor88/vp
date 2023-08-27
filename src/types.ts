@@ -7,7 +7,7 @@ export interface ICommonPageProps<SearchParamKeys extends string> {
 
 type TSortTypes = 1 | 2 | 3 | 4;
 
-type TFacets =
+type TFacetKeys =
 	| "prices"
 	| "toiletStyle"
 	| "colour"
@@ -23,7 +23,7 @@ type TFacets =
 	| "categories";
 
 interface IFacetOption<OptionValue, LinkSlug = never, ChildOptions = never> {
-	identifier: string;
+	identifier: TFacetKeys;
 	value: OptionValue;
 	displayValue: string;
 	productCount?: number;
@@ -84,6 +84,21 @@ interface IFacet<OptionValue> {
 interface IProduct {
 	id: string;
 }
+
+export type TFacets =
+	| IFacet<TPricesOption>
+	| IFacet<TToiletStyleOption>
+	| IFacet<TColourOption>
+	| IFacet<TFlushTypeOption>
+	| IFacet<TToiletProjectionOption>
+	| IFacet<TToiletWidthOption>
+	| IFacet<TToiletHeightOption>
+	| IFacet<TSoftClosingSeatOption>
+	| IFacet<TToiletShapeOption>
+	| IFacet<TBrandsOption>
+	| IFacet<TIsOnPromotionOption>
+	| IFacet<TStockStatusOption>
+	| IFacet<TCategoriesOption>;
 
 type TFacetArray = [
 	IFacet<TPricesOption>,

@@ -3,7 +3,7 @@
 import { interviewListingsEndpoint } from "@/apiEndpoints";
 import FilterAccordion from "@/clientComponents/filterAccordion";
 import { IApiResponse, ICommonPageProps } from "@/types";
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useMemo } from "react";
 
 type TAllowedQueryParams = "ap" | "page";
@@ -86,20 +86,14 @@ export default async function Products(
 				>
 					Filter By
 				</Typography>
-				<FilterAccordion
-					facetContents={[
-						{
-							key: "0",
-							element: <div>Test</div>,
-						},
-						{
-							key: "1",
-							element: <div>Test 2</div>,
-						},
-					]}
-					facetTitle={"Price"}
-					numInitialFacets={1}
-				/>
+				{data.facets.map((facet, idx) => (
+					<Box
+						key={facet.identifier}
+						marginBottom={idx === data.facets.length - 1 ? 0 : "1rem"}
+					>
+						<FilterAccordion facet={facet} numInitialOptions={2} />
+					</Box>
+				))}
 			</Grid>
 			<Grid item xs={12} sm={6} md={8} lg={9}>
 				<Grid container spacing={2}>
