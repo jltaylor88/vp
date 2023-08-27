@@ -5,7 +5,7 @@ export interface ICommonPageProps<SearchParamKeys extends string> {
 	searchParams: Record<SearchParamKeys, string> | {};
 }
 
-type TSortTypes = 1 | 2 | 3 | 4;
+export type TSortTypes = 1 | 2 | 3 | 4;
 
 export type TFacetKeys =
 	| "prices"

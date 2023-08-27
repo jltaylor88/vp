@@ -2,10 +2,19 @@
 
 import { interviewListingsEndpoint } from "@/apiEndpoints";
 import FilterAccordion from "@/clientComponents/filterAccordion";
+import SortingSelect from "@/clientComponents/sortingSelect";
 import { IApiResponse, ICommonPageProps } from "@/types";
 import getListingsData from "@/utils/getListingData";
 import parsePageSearchParams from "@/utils/parsePageSearchParams";
-import { Box, Grid, Typography } from "@mui/material";
+import {
+	Box,
+	FormControl,
+	Grid,
+	InputLabel,
+	MenuItem,
+	Select,
+	Typography,
+} from "@mui/material";
 import _ from "lodash";
 import { useCallback } from "react";
 
@@ -56,6 +65,18 @@ export default async function Products(
 				))}
 			</Grid>
 			<Grid item xs={12} sm={6} md={8} lg={9}>
+				<Box
+					display={"flex"}
+					alignItems={"flex-end"}
+					justifyContent={"space-between"}
+					marginBottom={"1rem"}
+					position={"relative"}
+				>
+					<SortingSelect />
+					<Typography variant='body1' color='text.primary'>
+						{data.pagination.total} results
+					</Typography>
+				</Box>
 				<Grid container spacing={2}>
 					<Grid item xs={12} md={6} lg={4}>
 						Product
