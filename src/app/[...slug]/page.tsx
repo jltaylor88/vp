@@ -3,6 +3,7 @@
 import { interviewListingsEndpoint } from "@/apiEndpoints";
 import FilterAccordion from "@/clientComponents/filterAccordion";
 import SortingSelect from "@/clientComponents/sortingSelect";
+import ProductCard from "@/serverComponents/productCard";
 import { IApiResponse, ICommonPageProps } from "@/types";
 import getListingsData from "@/utils/getListingData";
 import parsePageSearchParams from "@/utils/parsePageSearchParams";
@@ -84,18 +85,13 @@ export default async function Products(
 					</Typography>
 				</Box>
 				<Grid container spacing={2}>
-					<Grid item xs={12} md={6} lg={4}>
-						Product
-					</Grid>
-					<Grid item xs={12} md={6} lg={4}>
-						Product
-					</Grid>
-					<Grid item xs={12} md={6} lg={4}>
-						Product
-					</Grid>
-					<Grid item xs={12} md={6} lg={4}>
-						Product
-					</Grid>
+					{data.products.map(product => {
+						return (
+							<Grid key={product.id} item xs={12} md={6} lg={4}>
+								<ProductCard product={product} />
+							</Grid>
+						);
+					})}
 				</Grid>
 			</Grid>
 		</Grid>

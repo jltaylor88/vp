@@ -2,7 +2,7 @@ import { TFacetKeys, IFacetOption, TFacetOptions } from "@/types";
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 import { FunctionComponent } from "react";
-import FilterCheckbox from "./filterCheckbox";
+import FilterCheckbox from "../clientComponents/filterCheckbox";
 
 export interface IOptionsRendererProps {
 	count?: number;
