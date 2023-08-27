@@ -14,42 +14,12 @@ import AddIcon from "@mui/icons-material/Add";
 import { IFacetOption, TFacetKeys, TFacetOptions, TFacets } from "@/types";
 import FilterCheckbox from "./filterCheckbox";
 import Link from "next/link";
+import OptionsRenderer from "./optionsRenderer";
 
 interface IFlterAccordionProps {
 	facet: TFacets;
 	numInitialOptions?: number;
 }
-
-const OptionsRenderer: FunctionComponent<{
-	facetId: TFacetKeys;
-	option: IFacetOption<TFacetOptions, never>;
-}> = ({ facetId, option }) => {
-	// Render the category options as links
-	if (facetId === "categories") {
-		return (
-			<Link href={option.linkSlug}>
-				<Box sx={{ paddingY: "0.8rem" }}>
-					<Typography
-						variant='button'
-						color='success.main'
-						textTransform={"none"}
-						fontSize={"1rem"}
-					>
-						{option.displayValue}
-					</Typography>
-				</Box>
-			</Link>
-		);
-	} else {
-		return (
-			<FilterCheckbox
-				facetId={facetId}
-				label={option.displayValue}
-				value={option.identifier}
-			/>
-		);
-	}
-};
 
 const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 	facet,
