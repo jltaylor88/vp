@@ -1,5 +1,6 @@
 import { TAllowedQueryParams } from "@/app/[...slug]/page";
 import _ from "lodash";
+import sortParamIsValid from "./sortParamIsValid";
 
 type TParsePageSearchParams = (
 	searchParams: {} | Record<TAllowedQueryParams, string>
@@ -8,6 +9,7 @@ type TParsePageSearchParams = (
 	sizeNumber: number;
 	additionalPages: number;
 	parsedKeyValuePairs: Record<string, any>;
+	sortNumber: number;
 };
 
 const parsePageSearchParams: TParsePageSearchParams = searchParams => {
@@ -19,8 +21,13 @@ const parsePageSearchParams: TParsePageSearchParams = searchParams => {
 	const size = "size" in searchParams ? Number(searchParams.size) : undefined;
 	const sizeNumber = !size || isNaN(size) ? 30 : size;
 
+	// Get the additional pages to load
 	const ap = "ap" in searchParams ? Number(searchParams.ap) : undefined;
 	const additionalPages = !ap || isNaN(ap) ? 0 : ap;
+
+	// Get the sorting options
+	const sort = "sort" in searchParams ? Number(searchParams.sort) : undefined;
+	const sortNumber = !sort || isNaN(sort) || !sortParamIsValid(sort) ? 1 : sort;
 
 	// Define a custom predicate function to check if the key starts with 'f.'
 	const startsWithF = (_value: string | string[], key: string) =>
@@ -55,6 +62,7 @@ const parsePageSearchParams: TParsePageSearchParams = searchParams => {
 		sizeNumber,
 		additionalPages,
 		parsedKeyValuePairs,
+		sortNumber,
 	};
 };
 

@@ -18,7 +18,7 @@ import {
 import _ from "lodash";
 import { useCallback } from "react";
 
-export type TAllowedQueryParams = "ap" | "page";
+export type TAllowedQueryParams = "ap" | "page" | "sort";
 
 export default async function Products(
 	props: ICommonPageProps<TAllowedQueryParams>
@@ -32,11 +32,17 @@ export default async function Products(
 		throw new Error("We were unable to fetch your data: query is undefined");
 	}
 
-	const { pageNumber, sizeNumber, additionalPages, parsedKeyValuePairs } =
-		parsePageSearchParams(props.searchParams);
+	const {
+		pageNumber,
+		sizeNumber,
+		additionalPages,
+		parsedKeyValuePairs,
+		sortNumber,
+	} = parsePageSearchParams(props.searchParams);
 
 	const data = await getListingsData(
 		query,
+		sortNumber,
 		pageNumber,
 		sizeNumber,
 		additionalPages,
