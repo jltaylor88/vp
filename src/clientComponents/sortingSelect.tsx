@@ -29,18 +29,37 @@ const SortingSelect: FunctionComponent = () => {
 
 	// Too inexpensive to justify useCallBack
 	const handleChange = (event: SelectChangeEvent<TSortTypes>) => {
-		setSortBy(event.target.value as TSortTypes);
-	};
+		// Prevent the bubble up
+		event.stopPropagation();
+		const v = event.target.value as TSortTypes;
 
-	useEffect(() => {
 		// Generate new search params
 		const sp = new URLSearchParams(searchParams.toString());
+
 		// Remove the sort param
 		sp.delete("sort");
 		// Add the new sort param
-		sp.append("sort", sortBy.toString());
-		router.push(pathName + "?" + sp.toString());
-	}, [pathName, router, searchParams, sortBy]);
+		sp.append("sort", v.toString());
+
+		if (!sortParamIsValid(numSortParam)) {
+			// If the sort param is invalid, replace the current url with the new one
+			router.replace(pathName + "?" + sp.toString());
+		} else {
+			router.push(pathName + "?" + sp.toString());
+		}
+	};
+
+	useEffect(() => {
+		// Get the value of the 'sort' query param
+		const sortParam = searchParams.get("sort");
+		const numSortParam = Number(sortParam);
+
+		if (sortParamIsValid(numSortParam)) {
+			setSortBy(numSortParam);
+		} else {
+			setSortBy(1);
+		}
+	}, [numSortParam, pathName, router, searchParams, sortBy]);
 
 	return (
 		<Box sx={{ width: 300 }}>
