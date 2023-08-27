@@ -3,44 +3,10 @@
 import { interviewListingsEndpoint } from "@/apiEndpoints";
 import FilterAccordion from "@/clientComponents/filterAccordion";
 import { IApiResponse, ICommonPageProps } from "@/types";
+import getListingsData from "@/utils/getListingData";
 import { Box, Grid, Typography } from "@mui/material";
-import { useMemo } from "react";
 
 type TAllowedQueryParams = "ap" | "page";
-
-// Forward the request to the API
-const getListingsData = async (
-	query: string,
-	pageNumber?: number,
-	size?: number,
-	additionalPages?: number
-) => {
-	const body = JSON.stringify({
-		query,
-		pageNumber,
-		size,
-		additionalPages,
-	});
-
-	const res: Response = await fetch(
-		interviewListingsEndpoint + "?apiKey=" + process.env.APIKey,
-		{
-			body,
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-		}
-	);
-	if (!res.ok) {
-		// This will activate the closest `error.js` Error Boundary
-		const t = await res.text();
-		throw new Error(t);
-	}
-	const data: IApiResponse = await res.json();
-
-	return data;
-};
 
 export default async function Products(
 	props: ICommonPageProps<TAllowedQueryParams>
