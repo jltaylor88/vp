@@ -37,7 +37,6 @@ const OptionsRenderer: FunctionComponent<IOptionsRendererProps> = ({
 				count={count}
 				facetId={facetId}
 				label={option.displayValue}
-				optionId={option.identifier}
 				value={option.value}
 			/>
 		);

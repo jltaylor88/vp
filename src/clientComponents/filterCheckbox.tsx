@@ -42,7 +42,6 @@ interface IFilterCheckboxProps {
 	count?: number;
 	facetId: TFacetKeys;
 	label: string;
-	optionId: string;
 	value: any;
 }
 
@@ -50,7 +49,6 @@ const FilterCheckbox: FunctionComponent<IFilterCheckboxProps> = ({
 	count,
 	facetId,
 	label,
-	optionId,
 	value,
 }) => {
 	const searchParams = useSearchParams();
