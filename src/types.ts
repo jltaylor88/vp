@@ -5,32 +5,74 @@ export interface ICommonPageProps<SearchParamKeys extends string> {
 	searchParams: Record<SearchParamKeys, string> | {};
 }
 
-export type TSortTypes = 1 | 2 | 3 | 4;
+type TSortTypes = 1 | 2 | 3 | 4;
 
-export interface IPagination {
+type TFacets =
+	| "prices"
+	| "toiletStyle"
+	| "colour"
+	| "flushType"
+	| "toiletProjection"
+	| "toiletWidth"
+	| "toiletHeight"
+	| "softClosingSeat"
+	| "toiletShape"
+	| "brands"
+	| "isOnPromotion"
+	| "stockStatus"
+	| "categories";
+
+interface IFacetOption<OptionValue, LinkSlug = never, ChildOptions = never> {
+	identifier: string;
+	value: OptionValue;
+	displayValue: string;
+	productCount?: number;
+	priority: number;
+	linkSlug: LinkSlug;
+	childOptions: IFacetOption<OptionValue>[];
+}
+
+type TPricesOption = IFacetOption<{
+	gte: number;
+	lte: number;
+}>;
+
+type TToiletStyleOption = IFacetOption<string>;
+
+type TColourOption = IFacetOption<string>;
+
+type TFlushTypeOption = IFacetOption<string>;
+
+type TToiletProjectionOption = IFacetOption<string>;
+
+type TToiletWidthOption = IFacetOption<string>;
+
+type TToiletHeightOption = IFacetOption<string>;
+
+type TSoftClosingSeatOption = IFacetOption<string>;
+
+type TToiletShapeOption = IFacetOption<string>;
+
+type TBrandsOption = IFacetOption<string>;
+
+type TIsOnPromotionOption = IFacetOption<boolean>;
+
+type TStockStatusOption = IFacetOption<boolean>;
+
+type TCategoriesOption = IFacetOption<
+	string,
+	string,
+	IFacetOption<string, string, never>
+>;
+
+interface IPagination {
 	from: number;
 	size: number;
 	total: number;
 	sortType: TSortTypes;
 }
 
-export interface IApiResponse<FacetOptionValue> {
-	pagination: IPagination;
-	facets: IFacet<FacetOptionValue>[];
-	products: IProduct[];
-}
-
-export interface IFacetOption<OptionValue> {
-	identifier: string;
-	value: OptionValue;
-	displayValue: string;
-	productCount?: number;
-	priority: number;
-	linkSlug?: string;
-	childOptions?: IFacetOption<OptionValue>[];
-}
-
-export interface IFacet<OptionValue> {
+interface IFacet<OptionValue> {
 	identifier: string;
 	displayName: string;
 	priority: number;
@@ -39,6 +81,28 @@ export interface IFacet<OptionValue> {
 }
 
 // Not defined all of schema here, just the ones we need to save time
-export interface IProduct {
+interface IProduct {
 	id: string;
+}
+
+type TFacetArray = [
+	IFacet<TPricesOption>,
+	IFacet<TToiletStyleOption>,
+	IFacet<TColourOption>,
+	IFacet<TFlushTypeOption>,
+	IFacet<TToiletProjectionOption>,
+	IFacet<TToiletWidthOption>,
+	IFacet<TToiletHeightOption>,
+	IFacet<TSoftClosingSeatOption>,
+	IFacet<TToiletShapeOption>,
+	IFacet<TBrandsOption>,
+	IFacet<TIsOnPromotionOption>,
+	IFacet<TStockStatusOption>,
+	IFacet<TCategoriesOption>
+];
+
+export interface IApiResponse {
+	pagination: IPagination;
+	facets: TFacetArray;
+	products: IProduct[];
 }

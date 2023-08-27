@@ -37,7 +37,7 @@ const getListingsData = async (
 		const t = await res.text();
 		throw new Error(t);
 	}
-	const data: IApiResponse<unknown> = await res.json();
+	const data: IApiResponse = await res.json();
 
 	return data;
 };
