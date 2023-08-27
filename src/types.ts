@@ -92,8 +92,40 @@ interface IFacet<OptionValue> {
 }
 
 // Not defined all of schema here, just the ones we need to save time
-interface IProduct {
+export interface IProduct {
 	id: string;
+	productName: string;
+	slug: string;
+	averageRating?: number;
+	reviewsCount: number;
+	price: {
+		currencyCode: string;
+		wasPriceIncTax: number;
+		priceIncTax: number;
+		isOnPromotion: boolean;
+		discountPercentage?: number;
+		monthlyFinanceEstimate?: number;
+	};
+	image: {
+		url: string;
+		attributes: {
+			imageAltText: string;
+		};
+	};
+	attributes: {
+		isBestSeller: boolean;
+	};
+	brand: {
+		brandImage: {
+			url: string;
+			attributes: {
+				imageAltText: string;
+			};
+		};
+	};
+	stockStatus: {
+		status: string;
+	};
 }
 
 export type TFacets = IFacet<TFacetOptions>;

@@ -5,6 +5,7 @@ import generateFacetsPayload from "./generateFacetsPayload";
 // Forward the request to the API
 const getListingsData = async (
 	query: string,
+	sort: number,
 	pageNumber?: number,
 	size?: number,
 	additionalPages?: number,
@@ -12,6 +13,7 @@ const getListingsData = async (
 ) => {
 	const body = JSON.stringify({
 		query,
+		sort,
 		pageNumber,
 		size,
 		additionalPages,

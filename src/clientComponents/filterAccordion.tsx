@@ -14,7 +14,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { IFacetOption, TFacetKeys, TFacetOptions, TFacets } from "@/types";
 import FilterCheckbox from "./filterCheckbox";
 import Link from "next/link";
-import OptionsRenderer from "./optionsRenderer";
+import OptionsRenderer from "../serverComponents/optionsRenderer";
 
 interface IFlterAccordionProps {
 	facet: TFacets;

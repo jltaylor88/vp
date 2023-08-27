@@ -1,6 +1,8 @@
 "use client";
 
+import { sortOptions } from "@/constants";
 import { TSortTypes } from "@/types";
+import sortParamIsValid from "@/utils/sortParamIsValid";
 import {
 	FormControl,
 	InputLabel,
@@ -11,31 +13,6 @@ import {
 } from "@mui/material";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { FunctionComponent, useEffect, useState } from "react";
-
-const sortOptions: { value: TSortTypes; label: string }[] = [
-	{
-		value: 1,
-		label: "Recommended",
-	},
-	{
-		value: 2,
-		label: "Price: Low to High",
-	},
-	{
-		value: 3,
-		label: "Price: High to Low",
-	},
-	{
-		value: 4,
-		label: "Largest Discount",
-	},
-];
-
-const sortParamIsValid = (sortParam: number): sortParam is TSortTypes => {
-	return Boolean(
-		sortParam && sortOptions.some(option => option.value === Number(sortParam))
-	);
-};
 
 const SortingSelect: FunctionComponent = () => {
 	const router = useRouter();

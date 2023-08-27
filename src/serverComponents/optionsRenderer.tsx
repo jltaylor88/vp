@@ -2,7 +2,7 @@ import { TFacetKeys, IFacetOption, TFacetOptions } from "@/types";
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
 import { FunctionComponent } from "react";
-import FilterCheckbox from "./filterCheckbox";
+import FilterCheckbox from "../clientComponents/filterCheckbox";
 
 export interface IOptionsRendererProps {
 	count?: number;
@@ -37,7 +37,6 @@ const OptionsRenderer: FunctionComponent<IOptionsRendererProps> = ({
 				count={count}
 				facetId={facetId}
 				label={option.displayValue}
-				optionId={option.identifier}
 				value={option.value}
 			/>
 		);

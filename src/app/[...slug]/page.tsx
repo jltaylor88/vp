@@ -1,24 +1,15 @@
 // Renders the content for the products pages
 
-import { interviewListingsEndpoint } from "@/apiEndpoints";
 import FilterAccordion from "@/clientComponents/filterAccordion";
 import SortingSelect from "@/clientComponents/sortingSelect";
-import { IApiResponse, ICommonPageProps } from "@/types";
+import ProductCard from "@/serverComponents/productCard";
+import { ICommonPageProps } from "@/types";
 import getListingsData from "@/utils/getListingData";
 import parsePageSearchParams from "@/utils/parsePageSearchParams";
-import {
-	Box,
-	FormControl,
-	Grid,
-	InputLabel,
-	MenuItem,
-	Select,
-	Typography,
-} from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import _ from "lodash";
-import { useCallback } from "react";
 
-export type TAllowedQueryParams = "ap" | "page";
+export type TAllowedQueryParams = "ap" | "page" | "sort";
 
 export default async function Products(
 	props: ICommonPageProps<TAllowedQueryParams>
@@ -32,11 +23,17 @@ export default async function Products(
 		throw new Error("We were unable to fetch your data: query is undefined");
 	}
 
-	const { pageNumber, sizeNumber, additionalPages, parsedKeyValuePairs } =
-		parsePageSearchParams(props.searchParams);
+	const {
+		pageNumber,
+		sizeNumber,
+		additionalPages,
+		parsedKeyValuePairs,
+		sortNumber,
+	} = parsePageSearchParams(props.searchParams);
 
 	const data = await getListingsData(
 		query,
+		sortNumber,
 		pageNumber,
 		sizeNumber,
 		additionalPages,
@@ -78,18 +75,13 @@ export default async function Products(
 					</Typography>
 				</Box>
 				<Grid container spacing={2}>
-					<Grid item xs={12} md={6} lg={4}>
-						Product
-					</Grid>
-					<Grid item xs={12} md={6} lg={4}>
-						Product
-					</Grid>
-					<Grid item xs={12} md={6} lg={4}>
-						Product
-					</Grid>
-					<Grid item xs={12} md={6} lg={4}>
-						Product
-					</Grid>
+					{data.products.map(product => {
+						return (
+							<Grid key={product.id} item xs={12} md={6} lg={4}>
+								<ProductCard product={product} />
+							</Grid>
+						);
+					})}
 				</Grid>
 			</Grid>
 		</Grid>
