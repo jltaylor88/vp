@@ -4,6 +4,7 @@ import { TFacetKeys } from "@/types";
 import { Box, Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { isEqual } from "lodash";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
@@ -41,22 +42,25 @@ interface IFilterCheckboxProps {
 	count?: number;
 	facetId: TFacetKeys;
 	label: string;
-	value: string;
+	optionId: string;
+	value: any;
 }
 
 const FilterCheckbox: FunctionComponent<IFilterCheckboxProps> = ({
 	count,
 	facetId,
 	label,
+	optionId,
 	value,
 }) => {
 	const searchParams = useSearchParams();
 
 	const [isChecked, setIsChecked] = useState(searchParams.has(value));
+
 	useEffect(() => {
 		// Check if the search params constains `${facetId}=${value}`
 		const facetValues = searchParams.getAll(`f.${facetId}`);
-		const hasValue = facetValues.includes(value);
+		const hasValue = facetValues.includes(JSON.stringify(value));
 
 		setIsChecked(hasValue);
 	}, [facetId, searchParams, value]);
@@ -73,13 +77,16 @@ const FilterCheckbox: FunctionComponent<IFilterCheckboxProps> = ({
 			// Generate new search params
 			const sp = new URLSearchParams(searchParams.toString());
 			if (checked) {
-				sp.append(`f.${facetId}`, value);
+				sp.append(`f.${facetId}`, JSON.stringify(value));
 				router.push(pathName + "?" + sp.toString());
 			} else {
 				// Get all the values for the facet
 				const facetValues = sp.getAll(`f.${facetId}`);
 				// Remove the value from the facet
-				const newFacetValues = facetValues.filter(v => v !== value);
+				const newFacetValues = facetValues.filter(
+					v => !isEqual(JSON.parse(v), value)
+				);
+
 				// Remove the facet from the search params
 				sp.delete(`f.${facetId}`);
 				// Add the new facet values to the search params
