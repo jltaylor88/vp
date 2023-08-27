@@ -1,23 +1,13 @@
 // Renders the content for the products pages
 
-import { interviewListingsEndpoint } from "@/apiEndpoints";
 import FilterAccordion from "@/clientComponents/filterAccordion";
 import SortingSelect from "@/clientComponents/sortingSelect";
 import ProductCard from "@/serverComponents/productCard";
-import { IApiResponse, ICommonPageProps } from "@/types";
+import { ICommonPageProps } from "@/types";
 import getListingsData from "@/utils/getListingData";
 import parsePageSearchParams from "@/utils/parsePageSearchParams";
-import {
-	Box,
-	FormControl,
-	Grid,
-	InputLabel,
-	MenuItem,
-	Select,
-	Typography,
-} from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import _ from "lodash";
-import { useCallback } from "react";
 
 export type TAllowedQueryParams = "ap" | "page" | "sort";
 
