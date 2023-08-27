@@ -11,13 +11,41 @@ import {
 import { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import { TFacets } from "@/types";
+import { IFacetOption, TFacetKeys, TFacetOptions, TFacets } from "@/types";
 import FilterCheckbox from "./filterCheckbox";
+import Link from "next/link";
 
 interface IFlterAccordionProps {
 	facet: TFacets;
 	numInitialOptions?: number;
 }
+
+const OptionsRenderer: FunctionComponent<{
+	facetId: TFacetKeys;
+	option: IFacetOption<TFacetOptions, never>;
+}> = ({ facetId, option }) => {
+	// Render the category options as links
+	if (facetId === "categories") {
+		return (
+			<Link href={option.linkSlug}>
+				<Box sx={{ paddingY: "0.8rem" }}>
+					<Typography
+						variant='button'
+						color='success.main'
+						textTransform={"none"}
+						fontSize={"1rem"}
+					>
+						{option.displayValue}
+					</Typography>
+				</Box>
+			</Link>
+		);
+	} else {
+		return (
+			<FilterCheckbox label={option.displayValue} value={option.identifier} />
+		);
+	}
+};
 
 const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 	facet,
@@ -67,7 +95,7 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 				<AccordionDetails sx={{ padding: 0, paddingX: "1rem" }}>
 					{initialOptions.map(opt => (
 						<Box key={opt.identifier}>
-							<FilterCheckbox label={opt.displayValue} value={opt.identifier} />
+							<OptionsRenderer facetId={facet.identifier} option={opt} />
 						</Box>
 					))}
 				</AccordionDetails>
@@ -93,10 +121,7 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 							<Box sx={{ paddingX: "1rem" }}>
 								{extraOptions.map(ex => (
 									<Box key={ex.identifier}>
-										<FilterCheckbox
-											label={ex.displayValue}
-											value={ex.identifier}
-										/>
+										<OptionsRenderer facetId={facet.identifier} option={ex} />
 									</Box>
 								))}
 							</Box>

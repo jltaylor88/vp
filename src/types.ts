@@ -7,7 +7,7 @@ export interface ICommonPageProps<SearchParamKeys extends string> {
 
 type TSortTypes = 1 | 2 | 3 | 4;
 
-type TFacetKeys =
+export type TFacetKeys =
 	| "prices"
 	| "toiletStyle"
 	| "colour"
@@ -22,8 +22,8 @@ type TFacetKeys =
 	| "stockStatus"
 	| "categories";
 
-interface IFacetOption<OptionValue, LinkSlug = never, ChildOptions = never> {
-	identifier: TFacetKeys;
+export interface IFacetOption<OptionValue, LinkSlug = never> {
+	identifier: string;
 	value: OptionValue;
 	displayValue: string;
 	productCount?: number;
@@ -59,11 +59,22 @@ type TIsOnPromotionOption = IFacetOption<boolean>;
 
 type TStockStatusOption = IFacetOption<boolean>;
 
-type TCategoriesOption = IFacetOption<
-	string,
-	string,
-	IFacetOption<string, string, never>
->;
+type TCategoriesOption = IFacetOption<string, string>;
+
+export type TFacetOptions =
+	| TPricesOption
+	| TToiletStyleOption
+	| TColourOption
+	| TFlushTypeOption
+	| TToiletProjectionOption
+	| TToiletWidthOption
+	| TToiletHeightOption
+	| TSoftClosingSeatOption
+	| TToiletShapeOption
+	| TBrandsOption
+	| TIsOnPromotionOption
+	| TStockStatusOption
+	| TCategoriesOption;
 
 interface IPagination {
 	from: number;
@@ -73,7 +84,7 @@ interface IPagination {
 }
 
 interface IFacet<OptionValue> {
-	identifier: string;
+	identifier: TFacetKeys;
 	displayName: string;
 	priority: number;
 	options: IFacetOption<OptionValue>[];
@@ -85,20 +96,7 @@ interface IProduct {
 	id: string;
 }
 
-export type TFacets =
-	| IFacet<TPricesOption>
-	| IFacet<TToiletStyleOption>
-	| IFacet<TColourOption>
-	| IFacet<TFlushTypeOption>
-	| IFacet<TToiletProjectionOption>
-	| IFacet<TToiletWidthOption>
-	| IFacet<TToiletHeightOption>
-	| IFacet<TSoftClosingSeatOption>
-	| IFacet<TToiletShapeOption>
-	| IFacet<TBrandsOption>
-	| IFacet<TIsOnPromotionOption>
-	| IFacet<TStockStatusOption>
-	| IFacet<TCategoriesOption>;
+export type TFacets = IFacet<TFacetOptions>;
 
 type TFacetArray = [
 	IFacet<TPricesOption>,
