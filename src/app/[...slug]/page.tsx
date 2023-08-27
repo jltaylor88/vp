@@ -5,6 +5,8 @@ import FilterAccordion from "@/clientComponents/filterAccordion";
 import { IApiResponse, ICommonPageProps } from "@/types";
 import getListingsData from "@/utils/getListingData";
 import { Box, Grid, Typography } from "@mui/material";
+import _ from "lodash";
+import { useCallback } from "react";
 
 type TAllowedQueryParams = "ap" | "page";
 
@@ -33,11 +35,40 @@ export default async function Products(
 		"ap" in props.searchParams ? Number(props.searchParams.ap) : undefined;
 	const additionalPages = !ap || isNaN(ap) ? 0 : ap;
 
+	// Define a custom predicate function to check if the key starts with 'f.'
+	const startsWithF = (_value: string | string[], key: string) =>
+		_.startsWith(key, "f.");
+
+	// Use _.pickBy() to filter properties based on the predicate
+	const filteredParams: _.Dictionary<string | string[]> = _.pickBy(
+		props.searchParams,
+		startsWithF
+	);
+
+	// Get the keys of the filtered params without the 'f.' prefix
+	const keyValuePairs = _.mapKeys(filteredParams, (value, key) =>
+		key.substring(2)
+	);
+
+	// Convert stringified values to parsed values
+	const parsedKeyValuePairs = _.mapValues(keyValuePairs, value => {
+		try {
+			if (typeof value === "string") {
+				return JSON.parse(value);
+			} else {
+				return value.map(v => JSON.parse(v));
+			}
+		} catch (error) {
+			return value;
+		}
+	});
+
 	const data = await getListingsData(
 		query,
 		pageNumber,
 		sizeNumber,
-		additionalPages
+		additionalPages,
+		parsedKeyValuePairs
 	);
 
 	return (

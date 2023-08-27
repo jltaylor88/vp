@@ -1,18 +1,21 @@
 import { interviewListingsEndpoint } from "@/apiEndpoints";
 import { IApiResponse } from "@/types";
+import generateFacetsPayload from "./generateFacetsPayload";
 
 // Forward the request to the API
 const getListingsData = async (
 	query: string,
 	pageNumber?: number,
 	size?: number,
-	additionalPages?: number
+	additionalPages?: number,
+	facets?: Record<string, string[] | string>
 ) => {
 	const body = JSON.stringify({
 		query,
 		pageNumber,
 		size,
 		additionalPages,
+		facets: facets ? generateFacetsPayload(facets) : undefined,
 	});
 
 	const res: Response = await fetch(
