@@ -5,6 +5,7 @@ import { FunctionComponent } from "react";
 import FilterCheckbox from "./filterCheckbox";
 
 export interface IOptionsRendererProps {
+	count?: number;
 	facetId: TFacetKeys;
 	option: IFacetOption<TFacetOptions, never>;
 }
@@ -12,6 +13,7 @@ export interface IOptionsRendererProps {
 const OptionsRenderer: FunctionComponent<IOptionsRendererProps> = ({
 	facetId,
 	option,
+	count,
 }) => {
 	// Render the category options as links
 	if (facetId === "categories") {
@@ -32,6 +34,7 @@ const OptionsRenderer: FunctionComponent<IOptionsRendererProps> = ({
 	} else {
 		return (
 			<FilterCheckbox
+				count={count}
 				facetId={facetId}
 				label={option.displayValue}
 				value={option.identifier}

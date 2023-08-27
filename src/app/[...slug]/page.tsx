@@ -61,7 +61,7 @@ export default async function Products(
 	const pageNumber = !pageParam || isNaN(pageParam) ? 1 : pageParam;
 	const size =
 		"size" in props.searchParams ? Number(props.searchParams.size) : undefined;
-	const sizeNumber = !size || isNaN(size) ? 0 : size;
+	const sizeNumber = !size || isNaN(size) ? 30 : size;
 
 	const ap =
 		"ap" in props.searchParams ? Number(props.searchParams.ap) : undefined;

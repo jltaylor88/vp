@@ -69,7 +69,11 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 				<AccordionDetails sx={{ padding: 0, paddingX: "1rem" }}>
 					{initialOptions.map(opt => (
 						<Box key={opt.identifier}>
-							<OptionsRenderer facetId={facet.identifier} option={opt} />
+							<OptionsRenderer
+								facetId={facet.identifier}
+								option={opt}
+								count={opt.productCount}
+							/>
 						</Box>
 					))}
 				</AccordionDetails>
@@ -95,7 +99,11 @@ const FilterAccordion: FunctionComponent<IFlterAccordionProps> = ({
 							<Box sx={{ paddingX: "1rem" }}>
 								{extraOptions.map(ex => (
 									<Box key={ex.identifier}>
-										<OptionsRenderer facetId={facet.identifier} option={ex} />
+										<OptionsRenderer
+											facetId={facet.identifier}
+											option={ex}
+											count={ex.productCount}
+										/>
 									</Box>
 								))}
 							</Box>

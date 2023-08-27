@@ -1,19 +1,51 @@
 "use client";
 
 import { TFacetKeys } from "@/types";
+import { Box, Typography } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 import { FunctionComponent, useCallback, useEffect, useState } from "react";
 
+const Label: FunctionComponent<{ label: string; count?: number }> = ({
+	label,
+	count,
+}) => {
+	return (
+		<Box>
+			<Typography
+				variant='button'
+				color='text.primary'
+				textTransform={"none"}
+				fontSize={"1rem"}
+			>
+				{label}
+			</Typography>
+			{count !== undefined ? (
+				<Typography
+					variant='button'
+					color='text.secondary'
+					textTransform={"none"}
+					fontSize={"0.8rem"}
+					marginLeft={"0.5rem"}
+				>
+					({count ?? ""})
+				</Typography>
+			) : null}
+		</Box>
+	);
+};
+
 interface IFilterCheckboxProps {
+	count?: number;
 	facetId: TFacetKeys;
 	label: string;
 	value: string;
 }
 
 const FilterCheckbox: FunctionComponent<IFilterCheckboxProps> = ({
+	count,
 	facetId,
 	label,
 	value,
@@ -60,8 +92,10 @@ const FilterCheckbox: FunctionComponent<IFilterCheckboxProps> = ({
 
 	return (
 		<FormControlLabel
+			disabled={count === 0}
+			aria-disabled={count === 0}
 			control={<Checkbox checked={isChecked} onChange={handleChange} />}
-			label={label}
+			label={<Label label={label} count={count} />}
 			value={value}
 		/>
 	);
