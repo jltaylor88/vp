@@ -42,7 +42,11 @@ const OptionsRenderer: FunctionComponent<{
 		);
 	} else {
 		return (
-			<FilterCheckbox label={option.displayValue} value={option.identifier} />
+			<FilterCheckbox
+				facetId={facetId}
+				label={option.displayValue}
+				value={option.identifier}
+			/>
 		);
 	}
 };
