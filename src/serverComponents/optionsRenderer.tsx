@@ -1,14 +1,29 @@
 import { TFacetKeys, IFacetOption, TFacetOptions } from "@/types";
 import { Box, Typography } from "@mui/material";
-import Link from "next/link";
 import { FunctionComponent } from "react";
 import FilterCheckbox from "../clientComponents/filterCheckbox";
+import CategoryLink from "./categoryLink";
 
 export interface IOptionsRendererProps {
 	count?: number;
 	facetId: TFacetKeys;
 	option: IFacetOption<TFacetOptions, never>;
 }
+
+const renderNestedLinks = (catOption: IFacetOption<TFacetOptions, never>) => {
+	return (
+		<>
+			<CategoryLink category={catOption} />
+			{catOption.childOptions && catOption.childOptions.length > 0
+				? catOption.childOptions.map(child => (
+						<Box key={child.identifier} paddingLeft={2}>
+							{renderNestedLinks(child)}
+						</Box>
+				  ))
+				: null}
+		</>
+	);
+};
 
 const OptionsRenderer: FunctionComponent<IOptionsRendererProps> = ({
 	facetId,
@@ -17,20 +32,7 @@ const OptionsRenderer: FunctionComponent<IOptionsRendererProps> = ({
 }) => {
 	// Render the category options as links
 	if (facetId === "categories") {
-		return (
-			<Link href={option.linkSlug}>
-				<Box sx={{ paddingY: "0.8rem" }}>
-					<Typography
-						variant='button'
-						color='success.main'
-						textTransform={"none"}
-						fontSize={"1rem"}
-					>
-						{option.displayValue}
-					</Typography>
-				</Box>
-			</Link>
-		);
+		return renderNestedLinks(option);
 	} else {
 		return (
 			<FilterCheckbox

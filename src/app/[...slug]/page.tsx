@@ -7,7 +7,7 @@ import ProductCard from "@/serverComponents/productCard";
 import { ICommonPageProps } from "@/types";
 import getListingsData from "@/utils/getListingData";
 import parsePageSearchParams from "@/utils/parsePageSearchParams";
-import { Box, Button, Grid, LinearProgress, Typography } from "@mui/material";
+import { Box, Grid, LinearProgress, Typography } from "@mui/material";
 import _ from "lodash";
 
 export type TAllowedQueryParams = "ap" | "page" | "sort";

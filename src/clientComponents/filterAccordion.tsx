@@ -8,12 +8,10 @@ import {
 	AccordionDetails,
 	Button,
 } from "@mui/material";
-import { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import { FunctionComponent, useMemo, useState } from "react";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import { IFacetOption, TFacetKeys, TFacetOptions, TFacets } from "@/types";
-import FilterCheckbox from "./filterCheckbox";
-import Link from "next/link";
+import { TFacets } from "@/types";
 import OptionsRenderer from "../serverComponents/optionsRenderer";
 
 interface IFlterAccordionProps {
